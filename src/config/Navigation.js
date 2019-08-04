@@ -6,7 +6,7 @@ import ChatList from '../screens/ChatList';
 import ChatScreen from '../screens/ChatScreen'
 import People from '../screens/People'
 import Discover from '../screens/Discover'
-
+import Cam from '../screens/Cam'
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -53,7 +53,13 @@ const stack=createStackNavigator({
 
 ChatScreen:{
     screen:ChatScreen
-}
+},
+Cam: {
+  screen: Cam,
+  navigationOptions: {
+    header: null
+  }
+},
 
 })
 

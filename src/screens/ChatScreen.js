@@ -126,7 +126,7 @@ console.log('massagagagag',messages)
     
 </TouchableOpacity>
 <TouchableOpacity behavior="padding" enabled>
-    <Image source={require('../../assets/camera.png')} style={{width:20,height:20}}/>
+    <Image source={require('../../assets/camera.png')} onPress={() => this.props.navigation.navigate('Cam')} style={{width:20,height:20}}/>
 </TouchableOpacity>
 <TouchableOpacity>
     <Image source={require('../../assets/gallery.png')} style={{width:20,height:20}}/>
