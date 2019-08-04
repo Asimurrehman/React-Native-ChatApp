@@ -1,17 +1,56 @@
-import { createStackNavigator,createDrawerNavigator,createSwitchNavigator,createMaterialTopTabNavigator, createAppContainer,createBottomTabNavigator } from "react-navigation";
+import { createStackNavigator,createSwitchNavigator, createAppContainer,createBottomTabNavigator } from "react-navigation";
+import React, { Component } from 'react';
 
 import AuthWithFB from '../screens/AuthWithFB'
 import ChatList from '../screens/ChatList';
 import ChatScreen from '../screens/ChatScreen'
+import People from '../screens/People'
+import Discover from '../screens/Discover'
 
-
+import Feather from 'react-native-vector-icons/Feather';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
 
 
 const stack=createStackNavigator({
-  ChatList:{
-    screen:ChatList
+  Chat:{
+    screen:createBottomTabNavigator({
+      ChatList:{
+        screen:ChatList,
+        navigationOptions:{
+          tabBarIcon:({focused,tintColor})=>(
+            <Feather name='message-circle' size={25} color={focused ? 'black' : 'gray'}/>
+          )
+        }
+      },
+      Users:{
+        screen:People,
+              navigationOptions: {
+                
+                tabBarIcon: ({ tintColor,focused }) => (
+                  <SimpleLineIcons name='people' size={25}  color={focused ? 'black' : 'gray'}/>
+                )
+              }
+      },
+      Discover:{
+        screen:Discover,
+        navigationOptions:({
+          tabBarIcon:({focused,tintColor})=>(
+            <Feather name='compass' size={25} color={focused ? 'black' : 'gray'}/>
+        )
+        })
+        },
+
+
+    },
+    {
+      navigationOptions: { header: null }
+
+    })
+
 },
+
+
 ChatScreen:{
     screen:ChatScreen
 }
