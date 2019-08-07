@@ -7,6 +7,7 @@ import ChatScreen from '../screens/ChatScreen'
 import People from '../screens/People'
 import Discover from '../screens/Discover'
 import Cam from '../screens/Cam'
+import Story from '../screens/Story'
 import Feather from 'react-native-vector-icons/Feather';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -60,6 +61,12 @@ Cam: {
     header: null
   }
 },
+Story: {
+  screen:Story,
+  navigationOptions: {
+    header: null
+  }
+}
 
 })
 

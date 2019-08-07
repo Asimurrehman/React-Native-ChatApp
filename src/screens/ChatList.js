@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { auth,getAllUsers,createChatRoom } from '../config/firebase'
+import { auth,createChatRoom ,getAllUsers,db} from '../config/firebase'
 
 import { View,Text ,StyleSheet,Button,ScrollView,Image} from 'react-native';
 import { TouchableOpacity, TextInput } from 'react-native-gesture-handler';
+import Story from '../screens/Story'
 
 
 
@@ -15,6 +16,9 @@ export default  class ChatList extends Component {
         this.state = {
             user: auth.currentUser,
             users: [],
+            stories: [],
+            isStoryRendering: false,
+
           };
           this._createChatRoom = this._createChatRoom.bind(this);
     }
@@ -24,6 +28,7 @@ export default  class ChatList extends Component {
 
         let a = await getAllUsers();
         console.log('resolved of getAllUsers--------->', a)
+        this._getAllStories();
         this.setState({ users: a })
     }
 
@@ -43,8 +48,22 @@ export default  class ChatList extends Component {
         }
     }
 
+    async _getAllStories() {
+
+        db.collection('stories').onSnapshot(snapshot => {
+            const stories = [];
+            snapshot.forEach(doc => {
+                // console.log(doc.data())
+                stories.push({ data: doc.data(), id: doc.id })
+            })
+            this.setState({ stories: stories })
+        })
+
+       
+    }
+
     render() {
-        const { user, users } = this.state;
+        const { user, users ,stories,isStoryRendering} = this.state;
         console.log('users in state------>', users)
         return (
             <View style={styles.container}>
@@ -57,8 +76,8 @@ export default  class ChatList extends Component {
             </View>
             
              <View style={{flexDirection:'row'}}>
-             <TouchableOpacity>
-    <Image source={require('../../assets/camera.png')} style={{width:20,height:20,marginTop:15,margin:15}}/>
+             <TouchableOpacity onPress={() => this.props.navigation.navigate('Cam')} >
+    <Image source={require('../../assets/camera.png')}   style={{width:20,height:20,marginTop:15,margin:15}}/>
     
 </TouchableOpacity>
 
@@ -75,12 +94,30 @@ export default  class ChatList extends Component {
 
 
         <ScrollView horizontal style={{marginTop:10}}> 
-        <TouchableOpacity style={{alignItems:'center',margin:10}}>
-            <Image source={require('../../assets/plus.png')} style={{width:50,height:50,borderRadius:30}}/>
+     
+        <TouchableOpacity style={{alignItems:'center',margin:10}} onPress={() => this.props.navigation.navigate('Cam', { user: user })}>
+<Image source={require('../../assets/plus.png')} style={{width:50,height:50,borderRadius:30}} />
 
-            <Text style={{color:'darkgray',fontSize:12}}>Your Story</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{alignItems:'center',margin:10}}>
+<Text style={{color:'darkgray',fontSize:12}}>Your Story</Text>
+</TouchableOpacity>
+                                    
+
+
+{!!stories &&
+                                stories.map((item, key) => {
+                                    var str = item.data.displayName;
+                                    var res = str.substring(0, 6);
+                                    var displayName = res;
+                                    return (
+                                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Story',{item:item})} key={key} style={{ margin: 7, textAlign: 'center' }}>
+                                            <Image source={{ uri: item.data.uri }} style={{ width: 60, height: 60, borderRadius: 30 }} />
+                                            <Text >{displayName}</Text>
+                                        </TouchableOpacity>
+                                    );
+                                })
+                            }
+
+        {/* <TouchableOpacity style={{alignItems:'center',margin:10}}>
             <Image  source={{ uri: user.photoURL }} style={{width:50,height:50,borderRadius:30}}/>
 
             <Text style={{color:'darkgray',fontSize:12}}>{user.displayName}</Text>
@@ -114,14 +151,14 @@ export default  class ChatList extends Component {
             <Image source={require('../../assets/imad.jpg')} style={{width:50,height:50,borderRadius:30}}/>
 
             <Text style={{color:'darkgray',fontSize:12}}>Muhammad Imad</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         </ScrollView>
         <View>
 
             {!!users  && users.map((item,key)=>{
                 return(
-                    <TouchableOpacity style={{margin:10,flexDirection:'row'}}  onPress={() => this._createChatRoom(item, key)}>
+                    <TouchableOpacity style={{margin:10,flexDirection:'row'}} key={key} onPress={() => this._createChatRoom(item, key)}>
                 <Image source={{ uri: item.photoURL }} style={{width:60,height:60,borderRadius:30}}/>
                 <Text style={{marginTop:10,paddingLeft:5,fontSize:15}}> {item.displayName}</Text>
             </TouchableOpacity>

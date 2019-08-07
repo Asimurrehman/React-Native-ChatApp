@@ -80,7 +80,7 @@ console.log('massagagagag',messages)
         const { user, text, messages } = this.state;
         return (
             <View  style={styles.container}>
-            
+              <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }} enabled>
                 <View style={styles.mainview}>
 <View style={styles.profile}>
 {!!messages.length &&
@@ -95,20 +95,22 @@ console.log('massagagagag',messages)
                 //     { marginLeft: 'auto', backgroundColor: '#3b5998', margin: '3%', padding: '3%', borderRadius: 15 } :
                 //     { marginRight: 'auto', backgroundColor: '#696969', margin: '3%', padding: '3%', borderRadius: 15 };
 
-                <ScrollView>
+                <ScrollView style={{width:'100%'}}>
+                  <View >
+
                   {
                     item.data.userID === auth.currentUser.uid ?
-                      < View style={{ marginLeft: 'auto', backgroundColor: '#3b5998', margin: '3%', padding: '3%', borderRadius: 15 }}>
+                      < View style={{ marginLeft:180, backgroundColor: '#2d3436',padding:'3%',margin:'3%', borderRadius: 30,paddingRight:8}}>
                         <Text style={{  color: '#fff',fontWeight:'bold' }}>{item.data.message}</Text>
                         <Text style={{ color: '#fff' }}>{moment(item.data.timestamp).fromNow()}</Text>
                       </View>
                       :
-                      <View style={{ marginRight: 'auto', backgroundColor: '#696969', margin: '3%', padding: '3%', borderRadius: 15 }}>
-                        <Text style={{  color: '#fff' ,fontWeight:'bold'}}>{item.data.message}</Text>
-                        <Text style={{ color: '#fff' }}>{moment(item.data.timestamp).fromNow()}</Text>
+                      <View style={{ marginRight: 180, backgroundColor: '#dfe4ea', padding: '3%',margin:'3%', borderRadius: 30 ,paddingRight:8}}>
+                        <Text style={{  color: 'black' ,fontWeight:'bold'}}>{item.data.message}</Text>
+                        <Text style={{ color: 'black' }}>{moment(item.data.timestamp).fromNow()}</Text>
                       </View>
                   }
-
+</View>
                 </ScrollView>
 
 
@@ -125,10 +127,10 @@ console.log('massagagagag',messages)
     
     
 </TouchableOpacity>
-<TouchableOpacity behavior="padding" enabled>
-    <Image source={require('../../assets/camera.png')} onPress={() => this.props.navigation.navigate('Cam')} style={{width:20,height:20}}/>
+<TouchableOpacity  onPress={() => this.props.navigation.navigate('Cam')} >
+    <Image source={require('../../assets/camera.png')}  style={{width:20,height:20}}/>
 </TouchableOpacity>
-<TouchableOpacity>
+<TouchableOpacity onPress={() => this.props.navigation.navigate('Cam')} >
     <Image source={require('../../assets/gallery.png')} style={{width:20,height:20}}/>
 </TouchableOpacity>
 <TouchableOpacity>
@@ -147,7 +149,7 @@ console.log('massagagagag',messages)
 </View>
                 </View>
 
-            
+                </KeyboardAvoidingView>
             </View>
         );
     }

@@ -1,14 +1,14 @@
 import * as firebase from 'firebase';
 import * as Facebook from 'expo-facebook';
 import 'firebase/firestore'
-
+import { Alert } from 'react-native'
 
 var firebaseConfig = {
     apiKey: "AIzaSyBawCXwCjYZ4BIpZig8V5VFxmfIrQYle-g",
     authDomain: "rnchatapp-ebc79.firebaseapp.com",
     databaseURL: "https://rnchatapp-ebc79.firebaseio.com",
     projectId: "rnchatapp-ebc79",
-    storageBucket: "",
+    storageBucket: "rnchatapp-ebc79.appspot.com",
     messagingSenderId: "682261583557",
     appId: "1:682261583557:web:fbad7922707cdf11"
   };
@@ -107,6 +107,17 @@ function sendMessagesToDB(chatroomID, message) {
     return db.collection('chatrooms').doc(chatroomID).collection('messages').add(obj)
 }
 
+async function addStory(User, image) {
+
+    const response = await fetch(image);
+    const blob = await response.blob();
+    let storyName = image.split(/[\\/]/g).pop().split('.')[0];
+    var ref = storage.ref().child(`stories/${storyName}`);
+
+  
+    return ref.put(blob);
+
+}
 
 export {
     firebase,
@@ -116,5 +127,7 @@ export {
     registerUser,
 getAllUsers,
 createChatRoom,
-sendMessagesToDB
+sendMessagesToDB,
+addStory
+
 }
